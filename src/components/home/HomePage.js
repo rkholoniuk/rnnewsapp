@@ -8,7 +8,7 @@ import { Text, View,
 import { color } from 'react-native-material-design-styles'
 import logo from '../../images/logo.png'
 import styles from '../../styles'
-
+import Share, {ShareSheet, Button} from 'react-native-share';
 // utils
 import moment from 'moment'
 
@@ -42,6 +42,23 @@ class HomePage extends React.Component {
   scrollToTop () {
     this.refs._scrollView.scrollTo({x: 0, y: 0, animated: true})
   }
+  shareUrl(item) {
+    if (Platform.OS === 'web') {
+      debugger;
+      window.open(`https://twitter.com/share?url=${item.link}&text=${item.title}`, '_blank')
+    }
+    if (Platform.OS === 'android' || Platform.OS === 'ios') {
+      let shareOptions = {
+        title: item.title,
+        message: "",
+        url: item.link,
+        subject: "Share Link" //  for email
+      };
+      Share.shareSingle(Object.assign(shareOptions, {
+        "social": "twitter"
+      }));
+    }
+  }
 
   render () {
     const { items, errors, loading, filter, filters, overlayVisible, onLoadMore, onLoadItems, onOpenUrl, onToggleOverlay } = this.props
@@ -65,8 +82,7 @@ class HomePage extends React.Component {
             <View style={[styles.row, { height: 50 }]}>
               <View style={styles.row}>
                 <Image source={logo} style={{width: 20}} />
-                <Text style={[{fontWeight: 'bold', paddingLeft: 4}]}>News</Text>
-                <Text style={[{fontSize: 12, paddingLeft: 4}]}> {Platform.OS}</Text>
+                <Text style={[{fontWeight: 'bold', paddingLeft: 4}]}>News App</Text>
               </View>
               {filters.map((filterKey, i) => (
                 <TouchableHighlight
@@ -118,6 +134,9 @@ class HomePage extends React.Component {
                     <Text
                       onPress={() => onOpenUrl(item.link)}
                       style={[{padding: 2, flex: 1, textDecorationLine: 'underline'}, cursorStyle]}> { moment(item.pubDate).fromNow() }</Text>
+                      <Text
+                      onPress={() => this.shareUrl(item)}
+                      style={[{padding: 2, flex: 1, textDecorationLine: 'underline'}, cursorStyle]}>Share</Text>
                   </View>
                 </View>
 

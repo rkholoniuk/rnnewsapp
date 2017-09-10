@@ -13,13 +13,14 @@
     "web:build": "npm run web:build:vendor && npm run web:build:app",
     "web:serve": "http-serve -p 3001 --gzip true ./web/build",
     "storybook": "start-storybook -p 6006",
-	"build-storybook": "build-storybook"
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "moment": "^2.18.1",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.4",
     "react-native-material-design-styles": "^0.2.6",
+    "react-native-share": "^1.0.21",
     "react-native-web": "^0.0.88",
     "react-navigation": "^1.0.0-beta.11"
   },
