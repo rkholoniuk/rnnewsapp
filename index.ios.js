@@ -5,6 +5,6 @@
  */
 
 import { AppRegistry } from 'react-native';
-import AppContainer from './src/components/AppContainer'
+import Preview from './src/components/AppContainer'
 
-AppRegistry.registerComponent('ExampleApp', () => AppContainer);
+AppRegistry.registerComponent('ExampleApp', () => Preview);

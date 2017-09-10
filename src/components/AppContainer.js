@@ -1,92 +1,124 @@
-/* global fetch */
-import React from 'react'
-import { Linking, Platform } from 'react-native'
+import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  Alert,
+  AlertIos,
+  Image,
+  Coordinates,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  View,
+  Platform
+} from 'react-native';
 
-import HomePage from './home/HomePage'
+import Badge from 'react-native-smart-badge'
 
-export default class AppContainer extends React.Component {
-  constructor (props) {
+
+var windowSize = Dimensions.get('window');
+
+const backgroundImage = require('../images/EDBus.png');
+
+class Preview extends Component {
+  constructor(props) {
     super(props)
-    this.state = {
-      filters: ['all', 'nytimes', 'hackerru', 'wired', 'habr', 'gnews'],
-      filter: 'all', // 'Latest''
-      page: 0,
-      errors: {},
-      items: []
-    }
-    this.loadMore = this.loadMore.bind(this)
-    this.loadItems = this.loadItems.bind(this)
-    this.openUrl = this.openUrl.bind(this)
-    this.toggleOverlay = this.toggleOverlay.bind(this)
-  }
 
-  componentDidMount () {
-    // default items load
-    this.loadItems(this.state.filter)
-  }
-
-  openUrl (url) {
-    if (Platform.OS === 'web') {
-      window.open(url, '_blank')
-    }
-    if (Platform.OS === 'android' || Platform.OS === 'ios') {
-      Linking.openURL(url).catch(err => console.error('An error occurred', err))
+    this.state={
+      xcor:null,
+      ycor:null,
+      corx:'',
+      array:[],
+      width:300, 
+      height:100
     }
   }
-
-  loadItems (filter) {
-    this.setState({filter: filter})
-    // HACK: to avoid React state change race condition
-    setTimeout(() => {
-      this.loadMore('reset')
-    }, 0)
-  }
-
-  loadMore (mode) {
-    const page = (mode === 'reset') ? 0 : this.state.page
-    const filter = this.state.filter;
-    this.setState({loading: true})
+  handlePress(evt){
+    var array =this.state.array
+    var locationX, locationY;
+    // debugger;
+    if (Platform.OS == 'web') {
+      if (evt.nativeEvent.changedTouches){
+        var touch = evt.nativeEvent.changedTouches[0];
+        locationX = touch.pageX;
+        locationY = touch.pageY;
+      }
+      
+      locationX = evt.nativeEvent.clientX;
+      locationY = evt.nativeEvent.clientY;
+    } else {
+      locationX = evt.nativeEvent.locationX;
+      locationY = evt.nativeEvent.locationY;
+    }
     
-    //const fetchUrl= `http://192.168.0.102:8000/news/info/?page=${page}&source=${filter}`;
-    const fetchUrl= `http://78.47.247.226/news/info/?page=${page}&source=${filter}`;
-    fetch(fetchUrl)
-      .then(response => response.json())
-      .then(data => {
-        const previousItems = (page === 0) ? [] : this.state.items
-        this.setState({
-          items: [ ...previousItems, ...data ],
-          loading: false,
-          errors: {},
-          page: page + 1
-        })
-      })
-      .catch((error) => {
-        this.setState({
-          loading: false,
-          errors: {
-            error
-          }
-        })
-        console.error(error, page)
-      })
-  }
+    // var block_width = this.state.width / 19;
+    // var block_height = this.state.height / 10;
 
-  toggleOverlay () {
-    const {overlayVisible} = this.state
-    this.setState({overlayVisible: !overlayVisible})
-  }
+    
+    console.log("Coordinates",`x coord = ${locationX}`);
+    console.log("Coordinates",`y coord = ${locationY}`);
+    var cordinates = {
+      "xcor":locationX,
+      "ycor":locationY,
+      "name" :"Test"}
+    array.push(cordinates)
+    this.setState({
+      array:array
+    })
+}
 
-  render () {
-    return <HomePage
-      items={this.state.items}
-      errors={this.state.errors}
-      loading={this.state.loading}
-      filter={this.state.filter}
-      filters={this.state.filters}
-      overlayVisible={this.state.overlayVisible}
-      onOpenUrl={this.openUrl}
-      onLoadItems={this.loadItems}
-      onLoadMore={this.loadMore}
-      onToggleOverlay={this.toggleOverlay} />
+  render() {
+    var array =[];
+    if(this.state.array.length != 0){
+      this.state.array.map((res)=>{
+        array.push(
+          <View style={{position:"absolute",flex:1,left:res.xcor,top:res.ycor,backgroundColor:'black'}}>
+           <Badge textStyle={{color: 'white',}} minWidth={10} minHeight={10}>
+                    {`x= ${parseInt(res.xcor)} y= ${parseInt(res.ycor)}`}
+            </Badge>
+
+          </View>
+          )
+      })
+    }
+    return (
+      <View style={styles.container} >
+      <View style={{position:'absolute'}} >
+      <TouchableOpacity onLongPress={(evt) => this.handlePress(evt)}>
+        <ScrollView showsHorizontalScrollIndicator={true} 
+                    showsVerticalScrollIndicator={true} 
+                    style={[{flex: 1, width:windowSize.width,height:windowSize.height}]}
+                    scrollEventThrottle={16}
+                    directionalLockEnabled={true}>
+        <Image  source={backgroundImage} style={[
+                                                {resizeMode:'cover'},
+                                                {width:windowSize.width,height:windowSize.height},
+                                                //{width:this.state.width,height:this.state.height}
+                                                ]}>
+        </Image>
+        </ScrollView>
+         </TouchableOpacity>
+
+        </View>
+
+        {this.state.array.length != 0 ?(
+              <View >
+                {array}
+              </View>
+          ):(<View></View>)
+         }
+
+      </View>
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+
+  }
+});
+
+export default Preview;
