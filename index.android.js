@@ -6,5 +6,4 @@
 
 import { AppRegistry } from 'react-native';
 import Preview from './src/components/AppContainer'
-
-AppRegistry.registerComponent('ExampleApp', () => Preview);
+AppRegistry.registerComponent('rnnewsapp', () => Preview);
