@@ -8,20 +8,22 @@ export default class AppContainer extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      filters: ['all', 'nytimes', 'hackerru', 'wired', 'habr', 'gnews'],
-      filter: 'all', // 'Latest''
+      filters: ['all'],
+      filter: 'all',
       page: 0,
       errors: {},
       items: []
     }
     this.loadMore = this.loadMore.bind(this)
     this.loadItems = this.loadItems.bind(this)
+    this.loadCategories = this.loadCategories.bind(this)
     this.openUrl = this.openUrl.bind(this)
     this.toggleOverlay = this.toggleOverlay.bind(this)
   }
 
   componentDidMount () {
     // default items load
+    this.loadCategories();
     this.loadItems(this.state.filter)
   }
 
@@ -42,13 +44,36 @@ export default class AppContainer extends React.Component {
     }, 0)
   }
 
+  loadCategories(){
+    var fetchUrl= `http://78.47.247.226/news/sources/`;
+
+    fetch(fetchUrl)
+      .then(response => response.json())
+      .then(data => {
+        const previousFilter = this.state.filters
+        this.setState({
+          filters: [ ...previousFilter, ...data.map((item, i) => (item.name)) ],
+          loading: false,
+          errors: {}
+        })
+      })
+      .catch((error) => {
+        this.setState({
+          loading: false,
+          errors: {
+            error
+          }
+        })
+        console.error(error)
+      })
+  }
+
   loadMore (mode) {
     const page = (mode === 'reset') ? 0 : this.state.page
     const filter = this.state.filter;
     this.setState({loading: true})
-    
-    //const fetchUrl= `http://192.168.0.102:8000/news/info/?page=${page}&source=${filter}`;
-    const fetchUrl= `http://78.47.247.226/news/info/?page=${page}&source=${filter}`;
+    var fetchUrl= `http://78.47.247.226/news/info/?page=${page}`;
+    fetchUrl = filter && fetchUrl.concat(`&source=${filter}`);
     fetch(fetchUrl)
       .then(response => response.json())
       .then(data => {

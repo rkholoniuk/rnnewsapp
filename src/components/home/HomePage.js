@@ -139,7 +139,7 @@ class HomePage extends React.Component {
                       style={[{padding: 2, flex: 1, textDecorationLine: 'underline'}, cursorStyle]}>Share</Text>
                   </View>
                 </View>
-
+                  
               ))}
               <View style={[styles.itemRow, styles.buttonRow]}>
                 <TouchableHighlight
