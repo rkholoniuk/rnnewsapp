@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native'
-import { color } from 'react-native-material-design-styles'
+import { color,defaultTheme } from 'react-native-material-design-styles'
 
 export default StyleSheet.create({
   aboutLink: {
-    color: color.paperOrange600.color,
+    // color: color.paperOrange600.color,
     fontWeight: 'bold',
     padding: 10
   },
@@ -12,7 +12,7 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    // fontSize: '1.25rem',
+    fontSize: '1.50rem',
     fontWeight: 'bold'
   },
   image: {
@@ -21,11 +21,11 @@ export default StyleSheet.create({
     width: 40
   },
   header: {
-    backgroundColor: color.paperOrange500.color
+    backgroundColor: color.paperLightBlue500.color
   },
   body: {
     flex: 1,
-    backgroundColor: color.paperOrange300.color
+    backgroundColor: color.paperLightBlue500.color
   },
   row: {
     alignItems: 'center',
@@ -41,15 +41,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     paddingTop: 10,
     padding: 2,
-
     // marginTop: 1,
-    backgroundColor: 'rgb(223,223,223)',
-    // justifyContent: 'space-between',
+    backgroundColor: color.paperLightBlue100.color,
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
     flexWrap: 'wrap'
   },
   itemSubRow: {
-    backgroundColor: 'rgb(223,223,223)',
+    backgroundColor: color.paperLightBlue100.color,
     justifyContent: 'space-around',
     flexDirection: 'row',
     borderBottomWidth: 1,
@@ -87,12 +86,12 @@ export default StyleSheet.create({
     borderRadius: 20
   },
   buttonOrange: {
-    // borderColor:'orange',
-    backgroundColor: color.paperDeepOrange500.color
+    borderColor:color.paperLightBlue800.color,
+    backgroundColor: color.paperLightBlue800.color,
   },
   buttonGray: {
-    // borderColor:'gray',
+    borderColor:'gray',
     borderWidth: 0,
-    backgroundColor: '#eee'
+    backgroundColor: color.paperLightBlue800.color,
   }
 })

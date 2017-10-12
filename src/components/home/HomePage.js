@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View,
   TouchableHighlight, ScrollView,
   StatusBar, ActivityIndicator, Dimensions,
-  Platform, Image } from 'react-native'
+  Platform, Image, Icon } from 'react-native'
 
 // assets
 import { color } from 'react-native-material-design-styles'
@@ -71,9 +71,19 @@ class HomePage extends React.Component {
         <View style={styles.body}>
 
           <Overlay visible={overlayVisible}>
-            <Text style={{fontSize: 18}}>
-              <Text style={{fontWeight: 'bold'}}>HAgnostic News</Text> is a simple Hacker News reader for the Web and a React Native app (Android / iOS).
-            </Text>
+           
+          {filters.map((filterKey, i) => (
+                <TouchableHighlight
+                style={[styles.button, styles.buttonOrange]}
+                underlayColor={color.paperLightBlue400.color}
+                onPress={() => { onLoadItems(filterKey); this.scrollToTop() ; onToggleOverlay() }}>
+ 
+                <View style={styles.row}>
+                  <Text style={{color: 'white', fontWeight: 'bold', paddingRight: 5}}>{filterKey}</Text>{ filter === filterKey && loading ? <ActivityIndicator /> : null}
+                </View>
+              </TouchableHighlight>
+               ))}
+
             <Text style={{fontSize: 18, marginTop: 20}}> News App</Text>
           </Overlay>
 
@@ -87,7 +97,7 @@ class HomePage extends React.Component {
               {filters.map((filterKey, i) => (
                 <TouchableHighlight
                 style={[styles.button, filter === filterKey ? styles.buttonOrange : null]}
-                underlayColor={color.paperOrange200.color}
+                underlayColor={color.paperLightBlue400.color}
                 onPress={() => { onLoadItems(filterKey); this.scrollToTop() }}>
                 <View style={styles.row}>
                   <Text style={{color: 'white', fontWeight: 'bold', paddingRight: 5}}>{filterKey}</Text>{ filter === filterKey && loading ? <ActivityIndicator /> : null}
@@ -95,7 +105,7 @@ class HomePage extends React.Component {
               </TouchableHighlight>
                ))}
               <TouchableHighlight
-                underlayColor={color.paperOrange200.color}
+                underlayColor={color.paperLightBlue400.color}
                 onPress={() => { onToggleOverlay() }}>
                 <Text style={{color: 'white', fontWeight: 'bold', padding: 10}}>?</Text>
               </TouchableHighlight>
