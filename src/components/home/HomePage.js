@@ -90,24 +90,10 @@ class HomePage extends React.Component {
           <View style={[styles.column, styles.header,
             Platform.OS === 'ios' ? { height: 75, paddingTop: 20 } : {} ]}>
             <View style={[styles.row, { height: 50 }]}>
-              <View style={styles.row}>
-                <Image source={logo} style={{width: 20}} />
-                <Text style={[{fontWeight: 'bold', paddingLeft: 4}]}>News App</Text>
-              </View>
-              {filters.map((filterKey, i) => (
-                <TouchableHighlight
-                style={[styles.button, filter === filterKey ? styles.buttonOrange : null]}
-                underlayColor={color.paperLightBlue400.color}
-                onPress={() => { onLoadItems(filterKey); this.scrollToTop() }}>
-                <View style={styles.row}>
-                  <Text style={{color: 'white', fontWeight: 'bold', paddingRight: 5}}>{filterKey}</Text>{ filter === filterKey && loading ? <ActivityIndicator /> : null}
-                </View>
-              </TouchableHighlight>
-               ))}
               <TouchableHighlight
                 underlayColor={color.paperLightBlue400.color}
                 onPress={() => { onToggleOverlay() }}>
-                <Text style={{color: 'white', fontWeight: 'bold', padding: 10}}>?</Text>
+                <Text style={{color: 'white', fontWeight: 'bold', padding: 10}}>Menu</Text>
               </TouchableHighlight>
             </View>
             { Object.keys(errors).length > 0 ? (

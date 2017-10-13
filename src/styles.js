@@ -12,7 +12,7 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    fontSize: '1.50rem',
+    // fontSize: '1.50rem',
     fontWeight: 'bold'
   },
   image: {
